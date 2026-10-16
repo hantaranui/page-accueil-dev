@@ -107,5 +107,5 @@ Rappelle le cycle de vie : Ouverte, Corrigée, Vérifiée, Fermée. **Celui qui 
 
 Widget « page d'accueil » du Partenariat simplifié (voir CLAUDE.md). Préfixe des identifiants de test : ACC- (par exemple ACC-001).
 Pour l'angle « droits par profil », prévois au moins deux cas : un propriétaire du document, et un utilisateur à accès partiel (profils de la table Utilisateurs : FT National, FT Régional, FT Départemental, ANS). Piège connu : pour un accès partiel, les noms de pages peuvent disparaître des cartes si un propriétaire n'a pas enregistré la configuration.
-Environnements : document Grist DEV d'abord, puis PROD.
-Le « Protocole de test des applications » n'est pas dans ce dépôt : si tu en as besoin, écris [À CONFIRMER] au lieu de le supposer.
+Environnements : toutes les campagnes de test se font sur DEV, avec des données fictives. Seule exception : après une mise en production, le chef de projet rejoue en PROD les tests de fumée qui ne créent ni ne modifient de données.
+Lis docs/tests/protocole-de-test.md (le protocole de l'équipe) et docs/tests/guide-testeur.md (le guide du projet) avant chaque tâche.
