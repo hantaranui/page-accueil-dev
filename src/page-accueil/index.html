@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Partenariat simplifié</title>
     <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+    <script src="https://hantaranui.github.io/Bandeau_France-Travail/bandeau.js" data-titre="Accueil"></script>
     <link href="https://cdn.francetravail.fr/studio/design-system/css/styles.css" rel="stylesheet">
     <script src="https://cdn.francetravail.fr/webco/v1/ft-autoloader.js" fetchpriority="high"></script>
     <link rel="stylesheet" href="style.css">
   </head>
   <body class="outil-agent">
-    <header class="home-banner">
-      <img class="home-logo" src="https://cdn.francetravail.fr/studio/logos/marque/Logo_France_Travail_RVB_Horizontal_Coul_Positif.svg" alt="France Travail">
-      <h1 class="t1 home-title">Partenariat simplifié</h1>
-      <img class="home-logo home-logo-clubs" src="https://lesclubs-sportifs-engages.francetravail.fr/img/logo-lcse.svg" alt="Les clubs sportifs engagés">
-    </header>
+    <!-- Titre principal visible seulement des lecteurs d'écran : le bandeau commun n'a pas de h1. -->
+    <h1 class="sr-only">Partenariat simplifié – Accueil</h1>
 
     <main class="home-main">
       <h2 class="t2 home-intro" id="intro">Bienvenue sur l'outil Partenariat simplifié qui vous aidera à gérer et piloter les actions d'insertion par le sport.<br>Que souhaitez-vous faire ?</h2>

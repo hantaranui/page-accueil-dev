@@ -9,40 +9,6 @@ body {
   color: var(--ft-color-text-content-default);
 }
 
-.home-banner {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
-  background: var(--ft-color-background-neutral-light);
-  border-bottom: 1px solid var(--ft-color-border-neutral-default);
-}
-
-.home-logo {
-  display: block;
-  height: 56px;
-  width: auto;
-  max-width: 100%;
-}
-
-/* Le logo des clubs se cale sur le bord droit pour que le titre reste centre
-   sur la page, quelle que soit la largeur respective des deux logos. Presque
-   carre, il parait minuscule a hauteur egale du logo horizontal : on le grandit
-   pour que les deux marques pesent autant a l'oeil. */
-.home-logo-clubs {
-  justify-self: end;
-  height: 72px;
-}
-
-/* Taille, police et graisse viennent de .t1 ; on retire seulement sa marge
-   basse, faite pour un titre de page et non pour un bandeau. */
-.home-title {
-  margin: 0;
-  text-align: center;
-  color: var(--ft-color-text-content-strong);
-}
-
 .home-main {
   padding: 2rem 1.5rem;
 }
@@ -120,17 +86,6 @@ body {
 }
 
 @media (max-width: 600px) {
-  .home-banner {
-    grid-template-columns: 1fr 1fr;
-    padding: 1rem;
-  }
-  .home-logo { height: 40px; }
-  .home-logo-clubs { height: 52px; }
-  /* Les deux logos occupent la premiere ligne, le titre passe dessous. */
-  .home-title {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
   .home-main { padding: 1.5rem 1rem; }
   .home-cards { grid-template-columns: 1fr; gap: 1rem; }
   .home-config { padding: 1rem; }
