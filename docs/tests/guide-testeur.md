@@ -21,11 +21,9 @@ Un widget est une petite application web (HTML, CSS, JavaScript) affichée dans 
 | --- | --- | --- | --- | --- |
 | Page d'accueil | Page d'aiguillage vers le Dashboard et la Page publique | Équipes France Travail | page-accueil-partenariat-simplifi- | Réalisé ; le remplacement de son bandeau par le bandeau commun est en attente de décision |
 | Dashboard « Actions d'insertion par le sport » | Tableau de bord : filtres, indicateurs, graphiques en camembert | Équipes France Travail | grist-qpv-widget | Première version [À CONFIRMER : niveau d'avancement] |
-| Widget QPV | Retrouver le quartier prioritaire de la politique de la ville (QPV) à partir d'une adresse | Équipes France Travail | grist-qpv-widget (même dépôt que le Dashboard) | Réalisé |
 | Page publique « Les clubs sportifs engagés » | Présenter les actions et permettre de proposer un soutien financier | Visiteurs anonymes (financeurs) | Soutien_actions_widget-Grist | Réalisé |
 | Bandeau de navigation France Travail | Bandeau commun affiché en haut de chaque widget | Tous | Bandeau_France-Travail | En construction (Nicolas Schena) |
 
-[À CONFIRMER : faut-il ajouter les widgets clubs et fiche-club (dépôt grist-qpv-widget), en construction ?]
 
 Les pages de données du document (Actions, Soutiens, Cofinancements, Structures, Agences, etc.) sont des pages Grist classiques, pas des widgets. Elles servent à vérifier ce que les widgets lisent et écrivent.
 
@@ -48,12 +46,6 @@ Tableau de bord de suivi des actions, avec des filtres (région, département, a
 - Chaque profil ne voit que son périmètre (voir la section sur les profils).
 - Le cas sans résultat : l'écran reste lisible, sans erreur.
 
-### Widget QPV
-
-À partir d'une adresse, indique si elle se trouve dans un quartier prioritaire de la politique de la ville (QPV). Il s'appuie sur la Base Adresse Nationale (BAN) pour géocoder l'adresse et sur les contours fournis par l'ANCT.
-
-- Une adresse située dans un QPV, une adresse hors QPV, une adresse introuvable ou incomplète.
-- Le comportement quand un service externe ne répond pas.
 
 ### Page publique « Les clubs sportifs engagés »
 
