@@ -11,7 +11,7 @@ L'outil a deux objectifs :
 - **Optimisation interne** : donner aux équipes de France Travail, des agences locales jusqu'au siège national, un tableau de bord pour mieux suivre les actions, gagner du temps administratif et gérer tout au même endroit.
 - **Cofinancement** : faciliter la recherche de financements externes (sponsors nationaux, entreprises locales) pour augmenter le nombre d'actions, en plus du financement de France Travail. Une page publique, inspirée des sites de financement participatif, permet de découvrir et de soutenir des actions.
 
-Le cadre temporel est l'appel à projets « FT 2026 ». Le document Grist s'appelle « Partenariat Simplifié » et existe en deux environnements, DEV et PROD (version actuelle de DEV : DEV5).
+Le cadre temporel est l'appel à projets « FT 2026 ». Le document Grist s'appelle « Partenariat Simplifié » et existe en deux environnements, DEV et PROD (version actuelle de DEV : DEV6).
 
 ## Les widgets à tester
 
@@ -92,7 +92,7 @@ Le document Grist contient 24 tables. Les widgets s'appuient surtout sur les sui
 | Utilisateurs | Les personnes, leur profil, leur direction et leur rôle |
 | Journal des évolutions | Le suivi du chantier : chaque changement, son environnement (DEV ou PROD), son statut de livraison |
 
-Les noms des tables et des colonnes sont écrits dans le code des widgets : **renommer une table ou une colonne peut casser un widget**. La table Actions contient une colonne « Corbeille » (case à cocher) qui semble servir à une suppression logique : [À CONFIRMER] avant de tester une suppression.
+Les noms des tables et des colonnes sont écrits dans le code des widgets : **renommer une table ou une colonne peut casser un widget**. La table Actions contient une colonne « Corbeille » (case à cocher) qui sert à une suppression logique : quand on supprime une action depuis le dashboard, elle n'est pas effacée. Sa ligne reste dans la table Actions, avec toutes ses données, et la case "Corbeille" est cochée. L'action n'apparaît plus dans les widgets (Dashboard, liste des clubs, fiches des clubs, page publique), mais elle existe toujours dans la table Actions et peut être retrouvée .
 
 ## Comment tester
 
@@ -141,14 +141,14 @@ Ces informations ne figurent pas dans ce document et doivent être complétées 
 
 | À renseigner | Valeur |
 | --- | --- |
-| Lien du document Grist DEV | [À COMPLÉTER] |
-| Version et date de la version à tester | [À COMPLÉTER] |
+| Lien du document Grist DEV | Document TEST |
+| Version et date de la version à tester | TEST-JL 18/10/2026 |
 | Compte de test FT National | [À COMPLÉTER] |
 | Compte de test FT Régional (et sa direction régionale) | [À COMPLÉTER] |
 | Compte de test FT Départemental (et son département) | [À COMPLÉTER] |
 | Compte de test ANS | [À COMPLÉTER] |
 | Lien de la page publique avec le paramètre d'accès | [À COMPLÉTER] |
-| Personne à contacter en cas de blocage | [À COMPLÉTER] |
+| Personne à contacter en cas de blocage | Hanta |
 | Où déposer les anomalies | [À COMPLÉTER] |
 
 Ne jamais écrire de mot de passe dans ce document : les transmettre par un autre canal.
