@@ -26,7 +26,6 @@ Fichiers modifiés : docs/ux/bandeau-commun-accueil.md (créé)
 Build refait : pas nécessaire
 Commit : à faire avec le code
 
-
 ## Tâche 3 — Bandeau commun sur la page d'accueil (code)
 
 Date : 17/10/2026
@@ -51,63 +50,39 @@ Fichiers modifiés : test/styles.test.js
 Build refait : pas nécessaire (déjà à jour)
 Commit : feat: remplacer l'en-tête propre par le bandeau commun
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <main></main>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 , choix accepté)
 Tests : 18 lancés, 17 réussis (1 échec attendu : test à adapter par le testeur)
 Fichiers modifiés : src/page-accueil/index.html, src/page-accueil/style.css, page-accueil.html (régénéré)
 Build refait : oui
 Commit : à faire après le testeur
+
+
+## Tâche 5 — Nouvelle page d'accueil : sans cartes, texte et photo
+
+Date : 19/10/2026
+Agent : @dev-interface
+Prompt : retirer les cartes et leur code ; phrase d'accueil en .t1 ; fond blanc et texte définis ensemble ; deux colonnes à partir de 768 px ; photo allégée à côté de page-accueil.html (build.js modifié)
+
+Note /5 : 5
+Ce qui allait : photo allégée de 3,7 Mo à 187 Ko (1200 × 800, métadonnées retirées), commande donnée ; variables vérifiées dans la feuille du design system ; script.js réduit à grist.ready ; seuls les tests attendus en échec ; aucun git add
+Ce que j'ai fait corriger : rien. Photo fournie par le chef de projet (droits assurés par lui ; crédit à confirmer). Original conservé hors du dépôt. À contrôler à l'œil : qualité 50 de la photo
+Tests : 6 lancés, 4 réussis (2 échecs attendus : tests des cartes, à reprendre par le testeur)
+Fichiers modifiés : src/page-accueil/index.html, style.css, script.js, photo-accueil.jpg (allégée), build.js, page-accueil.html et photo-accueil.jpg (générés)
+Build refait : oui
+Commit : à faire après le testeur
+
+## Tâche 6 — Tests de la nouvelle page d'accueil
+
+Date : 19/10/2026
+Agent : @testeur
+Prompt : supprimer les tests des cartes, adapter le test des classes, ajouter les tests de la fiche (h1 masqué, absence de cartes, photo, accès complet, copie de la photo par le build), puis la phrase d'accueil et la balise du bandeau commun
+
+Note /5 : 5
+Ce qui allait : s'en est tenu à la fiche et a signalé les deux tests qu'elle ne listait pas ; helper gardé et adapté au minimum, avec sa raison ; risques honnêtes (la copie de la photo n'est pas prouvée venir du build)
+Ce que j'ai fait corriger : ajout des tests de la phrase d'accueil et de la balise du bandeau commun
+Tests : 14 lancés, 14 réussis
+Fichiers modifiés : test/links.test.js (supprimé), test/helpers/widget.js, test/styles.test.js, test/build.test.js, test/page.test.js (créé)
+Build refait : pas nécessaire
+Commit : à faire
