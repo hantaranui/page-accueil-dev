@@ -11,13 +11,26 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body class="outil-agent">
-    <!-- Titre principal visible seulement des lecteurs d'écran : le bandeau commun n'a pas de h1. -->
-    <h1 class="sr-only">Partenariat simplifié – Accueil</h1>
-
     <main class="home-main">
-      <div class="home-content">
-        <p class="t1 home-intro">Bienvenue sur l'outil Partenariat simplifié qui vous aidera à gérer et piloter les actions d'insertion par le sport.</p>
-        <img class="home-photo" src="photo-accueil.jpg" alt="" width="1200" height="800">
+      <!-- Zone d'accueil. Pour enlever la bande teintée ET son bas en courbe,
+           il suffit de retirer la classe « with-bg-blue » ci-dessous : la page
+           redevient blanche. (« strip » seule ne change rien de visible.) -->
+      <div class="strip with-bg-blue home-hero">
+        <div class="home-content">
+          <div class="home-text">
+            <!-- Le seul h1 de la page : le bandeau commun n'en a pas. Le <br role="none">
+                 coupe la ligne sans que le lecteur d'écran lise une rupture. -->
+            <h1 class="display-3 home-title">
+              <span class="font-weight-normal">Bienvenue sur</span><br role="none">
+              <span class="font-weight-bold">Partenariat simplifié</span>
+            </h1>
+            <p class="t2 font-weight-normal home-intro">L'outil qui vous aidera à gérer et piloter les actions d'insertion par le sport.</p>
+          </div>
+          <!-- Le cadre porte les deux disques décoratifs (voir style.css). -->
+          <div class="home-photo-frame">
+            <img class="home-photo" src="photo-accueil.jpg" alt="" width="1200" height="800">
+          </div>
+        </div>
       </div>
     </main>
 

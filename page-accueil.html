@@ -24,8 +24,27 @@ body {
   color: var(--ft-color-text-content-default);
 }
 
+/* Pas de marge ici : la zone d'accueil prend toute la largeur (sa bande teintee
+   va jusqu'aux bords) et gere elle-meme ses marges. */
 .home-main {
-  padding: 2rem 1.5rem;
+  padding: 0;
+}
+
+/* Zone d'accueil : espace vertical, marges laterales, et overflow cache pour que
+   les disques decoratifs ne creent jamais de defilement horizontal.
+   Fond et texte sont poses ensemble : la teinte (strip with-bg-blue, du design
+   system) est translucide et se pose sur le blanc du body ; le texte reste en
+   couleur fixe, donc identique en mode clair et en mode sombre de Grist. */
+.home-hero {
+  overflow: hidden;
+  padding: var(--ft-spacer-l1) 1.5rem;
+  color: var(--ft-color-text-content-strong);
+}
+
+/* Bas en courbe : lie a la teinte. En retirant « with-bg-blue » dans le HTML,
+   cette regle ne s'applique plus : on retire la bande ET sa courbe d'un coup. */
+.home-hero.with-bg-blue {
+  border-radius: 0 0 50% 50% / 0 0 var(--ft-spacer-l3) var(--ft-spacer-l3);
 }
 
 /* Une colonne : le texte d'abord, la photo dessous (meme ordre que dans le HTML,
@@ -33,18 +52,59 @@ body {
 .home-content {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--ft-spacer-m2);
+  gap: var(--ft-spacer-l1);
   align-items: center;
   max-width: 80rem;
   margin: 0 auto;
 }
 
-/* Police, taille et graisse viennent de .t1 : on ne regle que l'encre, l'alignement
-   et la marge basse que .t1 ajoute (l'ecart vient du gap de la grille). */
+/* Taille et graisse viennent de .display-3 et des classes font-weight-* ;
+   on ne regle que l'encre et l'espace sous le titre (celui de la feuille est remis
+   a zero, l'ecart est pose une seule fois ici). */
+.home-title {
+  margin: 0 0 var(--ft-spacer-m2);
+  color: var(--ft-color-text-content-strong);
+}
+
+/* Police, taille et graisse viennent de .t2 : on ne regle que l'encre, l'alignement
+   et la marge basse que .t2 ajoute. */
 .home-intro {
   margin: 0;
   text-align: left;
   color: var(--ft-color-text-content-strong);
+}
+
+/* Cadre de la photo : il porte les deux disques decoratifs (::before et ::after).
+   « isolation: isolate » garde les disques (z-index negatif) derriere la photo
+   sans passer derriere le fond de la page. Aucun texte, aucune information. */
+.home-photo-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-photo-frame::before,
+.home-photo-frame::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+/* Grand disque, en haut a droite, qui depasse du cadre. */
+.home-photo-frame::before {
+  width: 50%;
+  top: -12%;
+  right: -8%;
+  background: var(--ft-color-background-primary-default);
+}
+
+/* Petit disque pale, en bas a gauche, qui depasse du cadre. */
+.home-photo-frame::after {
+  width: 32%;
+  bottom: -10%;
+  left: -6%;
+  background: var(--ft-color-background-primary-weaker);
 }
 
 /* Petit ecran : hauteur limitee, photo recadree au centre. */
@@ -56,31 +116,54 @@ body {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: 50% 50%;
+  border-radius: var(--ft-radius-default);
 }
 
 /* 768 px est le point « md » du design system. Deux colonnes de meme largeur ;
    la photo reprend son rapport d'origine, sans recadrage. */
 @media (min-width: 768px) {
+  .home-hero {
+    min-height: 30.9375rem;
+    padding-top: var(--ft-spacer-l4);
+    padding-bottom: var(--ft-spacer-l4);
+    display: flex;
+    align-items: center;
+  }
   .home-content {
+    width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--ft-spacer-l1);
   }
   .home-photo { aspect-ratio: auto; }
+  .home-photo-frame::before { width: 70%; }
+  .home-photo-frame::after { width: 45%; }
 }
 
 @media (max-width: 600px) {
-  .home-main { padding: 1.5rem 1rem; }
+  .home-hero { padding-left: 1rem; padding-right: 1rem; }
 }
 </style>
   </head>
   <body class="outil-agent">
-    <!-- Titre principal visible seulement des lecteurs d'écran : le bandeau commun n'a pas de h1. -->
-    <h1 class="sr-only">Partenariat simplifié – Accueil</h1>
-
     <main class="home-main">
-      <div class="home-content">
-        <p class="t1 home-intro">Bienvenue sur l'outil Partenariat simplifié qui vous aidera à gérer et piloter les actions d'insertion par le sport.</p>
-        <img class="home-photo" src="photo-accueil.jpg" alt="" width="1200" height="800">
+      <!-- Zone d'accueil. Pour enlever la bande teintée ET son bas en courbe,
+           il suffit de retirer la classe « with-bg-blue » ci-dessous : la page
+           redevient blanche. (« strip » seule ne change rien de visible.) -->
+      <div class="strip with-bg-blue home-hero">
+        <div class="home-content">
+          <div class="home-text">
+            <!-- Le seul h1 de la page : le bandeau commun n'en a pas. Le <br role="none">
+                 coupe la ligne sans que le lecteur d'écran lise une rupture. -->
+            <h1 class="display-3 home-title">
+              <span class="font-weight-normal">Bienvenue sur</span><br role="none">
+              <span class="font-weight-bold">Partenariat simplifié</span>
+            </h1>
+            <p class="t2 font-weight-normal home-intro">L'outil qui vous aidera à gérer et piloter les actions d'insertion par le sport.</p>
+          </div>
+          <!-- Le cadre porte les deux disques décoratifs (voir style.css). -->
+          <div class="home-photo-frame">
+            <img class="home-photo" src="photo-accueil.jpg" alt="" width="1200" height="800">
+          </div>
+        </div>
       </div>
     </main>
 
