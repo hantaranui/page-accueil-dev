@@ -86,3 +86,33 @@ Tests : 14 lancés, 14 réussis
 Fichiers modifiés : test/links.test.js (supprimé), test/helpers/widget.js, test/styles.test.js, test/build.test.js, test/page.test.js (créé)
 Build refait : pas nécessaire
 Commit : à faire
+
+
+## Tâche 7 — Mise en scène de la zone d'accueil
+
+Date : 19/10/2026
+Agent : @dev-interface
+Prompt : appliquer la section 9 de la fiche : titre display-3 sur deux lignes (seul h1), paragraphe t2, bande strip with-bg-blue avec bas en courbe, photo arrondie et deux disques, couleurs du design system
+
+Note /5 : 5
+Ce qui allait : classes du gabarit « Landing Page Template » du design system ; aucune couleur écrite en dur ; bande teintée retirable en enlevant une seule classe (commentaire dans le code) ; seuls les deux tests attendus en échec
+Ce que j'ai fait corriger : rien. Bande teintée, courbe et disques validés par le chef de projet
+Tests : 14 lancés, 12 réussis (2 échecs attendus : h1 et phrase d'accueil, à reprendre par le testeur)
+Fichiers modifiés : src/page-accueil/index.html, src/page-accueil/style.css, page-accueil.html (généré)
+Build refait : oui
+Commit : à faire après le testeur
+
+
+## Tâche 8 — Tests de la zone d'accueil
+
+Date : 19/10/2026
+Agent : @testeur
+Prompt : adapter les tests du h1 et de la phrase d'accueil à la nouvelle zone d'accueil, compléter la liste de classes, ajouter les tests de la section 9 de la fiche
+
+Note /5 : 5
+Ce qui allait : deux tests modifiés, un complété, sept ajoutés (fiche 9.6), tous cités ; le test de la taille de la photo écrit sans dépendance ; risques honnêtes (les tests ne voient pas le rendu)
+Ce que j'ai fait corriger : rien ; test n°7 conservé
+Tests : 21 lancés, 21 réussis
+Fichiers modifiés : test/page.test.js, test/styles.test.js
+Build refait : pas nécessaire (test de fraîcheur réussi)
+Commit : à faire

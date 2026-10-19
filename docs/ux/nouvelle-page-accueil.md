@@ -14,6 +14,8 @@ Sources : src/page-accueil/ (index.html, style.css, script.js), test/, build.js,
 
 Skill UI/UX : le dossier .claude/skills/ n'existe pas dans ce dépôt, aucun skill n'a donc été appliqué.
 
+**Mise à jour du 19/10/2026 : la section 9 (« Mise en scène de la zone d'accueil ») donne un vrai style à la page.** Là où elle dit autre chose, elle remplace : le texte et le titre (§3 et §4 : plus de `<p class="t1">` ni de `h1` masqué), la structure HTML du §3 et les règles 2 à 4 du résumé. Le reste (photo allégée, tests déjà en place, bandeau commun) est inchangé. Correction : le fichier photo fait 1200 × 800 px (relevé avec `sips`), pas 1200 × 802 comme écrit au §3 et au §5 ; index.html a déjà `height="800"`.
+
 ## 1. Parcours et écran
 
 1. La personne ouvre le document Grist : le bandeau commun s'affiche en haut (titre « Accueil », menu).
@@ -337,7 +339,190 @@ Les tests ne vérifient ni le rendu ni les couleurs : un contrôle visuel (clair
 - **Publication** : le travail reste sur la branche du chantier, pas de fusion dans main avant le bandeau commun prêt (CLAUDE.md).
 - **Menu du bandeau commun** : les utilisateurs ne peuvent plus atteindre la liste des actions et la page publique **que** par ce menu. Vérifier qu'il contient bien ces deux liens avant la mise en ligne, sinon plus rien ne mène à ces pages depuis l'accueil.
 
+## 9. Mise en scène de la zone d'accueil
+
+Constat de Hanta : la page fonctionne mais ressemble à un texte et une image posés côte à côte. Référence : l'accueil du portail Emploi Store (grand titre sur deux lignes, petit paragraphe dessous, beaucoup d'espace, zone légèrement teintée à bas courbe, photo mise en valeur par de grands arcs). Les couleurs violet et turquoise de cette référence ne sont **pas** reprises : seules les couleurs du design system France Travail sont utilisées.
+
+Sources de cette section : feuille du CDN téléchargée et lue en entier le 19/10/2026 (416 099 caractères), menu et page « Landing Page Template » du site (https://designsystem.francetravail.io/components/detail/landing-page-template--default.html), test/design-system-classes.txt. **Aucun rendu n'a été vu dans un navigateur** : toute proportion ou position ci-dessous est à valider à l'écran.
+
+### 9.1 Le design system propose-t-il un composant pour cette zone ?
+
+**Pas de composant « hero » ni « bannière »** dans le menu du site (composants, contenu, formulaire, composants complexes, gabarits). Le plus proche est le **gabarit « Landing Page Template »** (lien ci-dessus). Ce n'est pas un composant isolé, mais un bloc de la feuille CSS, déjà présent dans l'inventaire (`landing-heading`, `landing-heading-left`, `landing-heading-content`, `landing-heading-right`, `landing-heading-img`, `landing-heading-img-mask`, `strip`, `with-bg-blue`).
+
+Structure HTML du gabarit (lue sur le site) :
+
+```html
+<div class="strip with-bg-blue">
+  <div class="container-fluid">
+    <div class="landing-heading">
+      <div class="landing-heading-left">
+        <div class="landing-heading-content">
+          <h1 class="display-3">Titre<br role="none">suite</h1>
+          <p class="h2">Sous-titre</p>
+        </div>
+      </div>
+      <div class="landing-heading-right">
+        <div class="landing-heading-img">
+          <div class="landing-heading-img-mask"><img src="…" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+(Le gabarit ajoute un fil d'Ariane `ft-breadcrumb` : inutile ici, retiré.)
+
+Ce qu'il fait, d'après la feuille :
+
+| Élément | Règle réelle de la feuille |
+| ------- | -------------------------- |
+| `.landing-heading` | flex, centré verticalement ; à partir de 768 px, hauteur fixe de **30.9375rem** (min et max) |
+| `.landing-heading-left` | à partir de 768 px, largeur fixe **38.4375rem** (min et max) |
+| `.landing-heading-right` | **`display: none` sous 768 px** : la photo disparaît sur petit écran |
+| `.landing-heading-img img` | largeur fixe **800 px**, collée en bas à gauche, coupée par `overflow: hidden` |
+| `.landing-heading-img-mask` | découpe en **hexagone aux angles arrondis, en portrait** (SVG 761 × 847), `mask-size: 800px auto` |
+| `.strip.with-bg-blue` | fond en dégradé très léger (voir 9.4) |
+| `.landing-heading-img:after` | petit rond de 35 px, couleur de la variante (bleu : #406bde) |
+
+**Choix proposé : on réutilise le vocabulaire du gabarit sans reprendre le bloc `landing-heading` tel quel.** Raisons : (1) il cache la photo sous 768 px alors que Hanta veut « texte puis photo » ; (2) ses largeurs et hauteurs fixes (615 px de texte, 495 px de haut, photo de 800 px) sont faites pour une page entière, pas pour un widget Grist dont la largeur varie ; (3) sa découpe est un hexagone en portrait, alors que notre photo est en paysage 3:2 (la découpe tronquerait la forme : **non vérifié à l'écran**). On reprend donc : `strip with-bg-blue` (teinte), `h1.display-3` (titre), le principe du `<br role="none">`, et nos classes `home-` pour la grille et la photo. **À valider** avec le chef de projet : c'est un écart au gabarit.
+
+Variante « fidèle au gabarit » (si le chef de projet la préfère) : reprendre le bloc ci-dessus tel quel. Conséquences : photo masquée sous 768 px, forme en hexagone, **photo à recadrer en portrait** (la nôtre est en paysage), hauteur fixe de 495 px. Non retenue.
+
+### 9.2 Le texte : titre visible et paragraphe
+
+Maquette du texte :
+
+```
+Bienvenue sur                      ← graisse normale
+Partenariat simplifié              ← gras
+L'outil qui vous aidera à gérer et piloter les actions d'insertion par le sport.   ← paragraphe plus petit
+```
+
+Structure HTML (remplace le `<p class="t1 home-intro">` du §3) :
+
+```html
+<h1 class="display-3 home-title">
+  <span class="font-weight-normal">Bienvenue sur</span><br role="none">
+  <span class="font-weight-bold">Partenariat simplifié</span>
+</h1>
+<p class="t2 font-weight-normal home-intro">L'outil qui vous aidera à gérer et piloter les actions d'insertion par le sport.</p>
+```
+
+Lien du site pour la typographie : https://designsystem.francetravail.io/docs/fondamentaux/typographie.html (page non consultée ; valeurs lues dans la feuille).
+
+| Élément | Classes du design system | Taille (sous `outil-agent`) | Graisse |
+| ------- | ------------------------ | --------------------------- | ------- |
+| Titre | `display-3` | 2rem, interligne 2.375rem ; sous 768 px : 1.75rem ; sous 576 px : 1.5rem | la classe donne 500 ; `font-weight-normal` (400) et `font-weight-bold` (700) l'imposent sur chaque ligne (les deux classes existent dans l'inventaire et dans la feuille, avec `!important`) |
+| Paragraphe | `t2` | 1.125rem (18 px), interligne 1.3125rem | 500 par la classe ; `font-weight-normal` la ramène à 400 |
+
+- La police Marianne est chargée par la feuille en 400, 500 et 700 : les trois graisses existent.
+- `.t2` est utilisée par le gabarit sous le nom `p.h2` (même règle dans la feuille : `.h2, .t2, h2`). On garde `t2`, déjà utilisée dans ce projet.
+- Un `.lead` existe (1.25rem, graisse 300) mais il est écrit en dur, ne suit pas l'univers agent et sa graisse fine est moins lisible : non retenu.
+- **Plus grand ?** `.display-1` fait 2.625rem (42 px) en univers agent (interligne 3.0625rem), plus proche d'un « grand titre » d'Emploi Store. Son comportement sur petit écran **n'a pas été vérifié** : à ne proposer qu'avec l'accord du chef de projet. **À valider.**
+- Les marges de la feuille (`h1` : 0.5rem en bas ; `.t2` : 1.25rem en bas) sont remises à zéro ; l'écart titre / paragraphe est posé une seule fois : `--ft-spacer-m2` (1.5rem), par exemple en marge basse de `.home-title`.
+- Couleurs : titre et paragraphe en `--ft-color-text-content-strong` (#121212). Le gabarit colore son titre en #0d1440 sur fond teinté : on ne le reprend pas (règle « ne pas colorer un texte posé sur un fond de couleur » ; le titre n'est pas dans `landing-heading-content`, la règle de couleur du gabarit ne s'applique donc pas).
+
+**Le titre visible remplace le `h1` masqué : on garde le titre visible, on supprime `<h1 class="sr-only">`.** La page garde exactement un `h1` (obligation de CLAUDE.md ; le bandeau commun n'en a pas). Le `<br role="none">` est celui du gabarit : il coupe la ligne sans que le lecteur d'écran lise une rupture. Le titre est lu « Bienvenue sur Partenariat simplifié ». La classe `sr-only` n'est plus utilisée dans la page.
+
+### 9.3 La photo mise en valeur
+
+Le design system n'a **ni arcs de couleur, ni cadre décoratif** pour une photo. Il a seulement : la découpe en hexagone arrondi du gabarit (non retenue, voir 9.1), un petit rond de 35 px, et un rayon d'angle `--ft-radius-default` (0.75rem, valeur de la feuille). Proposition, en n'utilisant que des couleurs et variables de la feuille :
+
+| Élément | Description | Source | Statut |
+| ------- | ----------- | ------ | ------ |
+| Photo | angles arrondis `--ft-radius-default` (0.75rem) | variable de la feuille | rayon : source DS ; arrondir une photo : **à valider** |
+| Grand arc 1 | grand disque derrière la photo, dépassant en haut à droite, en `--ft-color-background-primary-default` (#406bde en univers agent) | couleur DS | forme **à valider** (absente du DS) |
+| Arc 2 | disque plus petit, dépassant en bas à gauche, en `--ft-color-background-primary-weaker` (#dbe3ff en univers agent) | couleur DS | forme **à valider** |
+
+Les deux disques sont de simples éléments CSS décoratifs (`::before` et `::after` du cadre de la photo) : pas de balise, pas d'image, pas de texte. Seule une partie de chaque disque se voit : le reste est caché par la photo ou coupé par la zone d'accueil. Le blanc ou la teinte de la page reste visible autour.
+
+```
+  zone d'accueil
+  ┌──────────────────────────────────────────────────────────────┐
+  │                                         ,-------.            │
+  │  Bienvenue sur                       ,-'  disque 1 '-.       │
+  │  Partenariat simplifié              │  ┌────────────┐ │      │
+  │                                     │  │            │ │      │
+  │  L'outil qui vous aidera à          │  │   PHOTO    │ ┘      │
+  │  gérer et piloter les actions       │  │            │        │
+  │  d'insertion par le sport.      ,-. └──┴────────────┘        │
+  │                                 `-'  disque 2 (pâle)         │
+  └──────────────────────────────────────────────────────────────┘
+```
+
+Principe CSS (propriétés standard, toutes les proportions sont **à valider à l'écran**) :
+
+- `.home-photo-frame` : `position: relative`, `isolation: isolate` ; `.home-photo` à l'intérieur reste au premier plan.
+- `.home-photo-frame::before` : disque de 70 % de la largeur du cadre (`aspect-ratio: 1`, `border-radius: 50%`), en haut à droite, partiellement hors du cadre, `z-index: -1`, fond `var(--ft-color-background-primary-default)`.
+- `.home-photo-frame::after` : disque de 45 % environ, en bas à gauche, `z-index: -1`, fond `var(--ft-color-background-primary-weaker)`.
+- `.home-hero` : `overflow: hidden`, pour que les disques ne créent **jamais de défilement horizontal**.
+- Aucune couleur en dur : le test de couleurs de la section 9.6 le vérifie.
+
+Aucune information n'est portée par ces formes : elles sont purement décoratives (RGAA : pas de contraste à justifier pour un décor, pas de texte alternatif).
+
+### 9.4 Le fond : blanc, avec une option teintée
+
+**Par défaut : la page reste blanche** (demande du chef de projet) : `body` en `--ft-color-background-neutral-light` (#fff), inchangé.
+
+**Option à soumettre au chef de projet : zone d'accueil légèrement teintée, bas en courbe.**
+
+- Teinte : le design system fournit `strip with-bg-blue` (classes présentes dans l'inventaire). Le dégradé de la feuille est : `linear-gradient(94deg, rgba(176,191,240,.4) 3.81%, rgba(219,227,255,.4) 37.78%, rgba(219,227,255,.4) 77.68%, rgba(176,191,240,.4) 111.62%)`. Posé sur du blanc, cela donne environ **#f1f4ff au centre** et **#dfe5f9 sur les bords** (calcul fait pour cette fiche : valeur composée sur blanc, à relever dans le navigateur). C'est la variante bleue, celle de la couleur principale de l'univers agent ; les variantes violet, jaune, rose et rouge existent mais ne sont pas proposées (le violet rappelle l'Emploi Store).
+- Bas en courbe : **le design system n'a aucune classe pour une zone à bas courbe** (aucune règle de ce type dans la feuille). Description simple : sur `.home-hero`, arrondir seulement les deux coins du bas avec un grand rayon elliptique, par exemple `border-radius: 0 0 50% 50% / 0 0 var(--ft-spacer-l3) var(--ft-spacer-l3)` (profondeur de courbe : 3rem, valeur d'espacement du design system). La forme et la profondeur sont **à valider**.
+- Dans la page : `<div class="strip with-bg-blue home-hero">` (option) ou `<div class="home-hero">` (blanc). Un seul mot change dans l'HTML ; la courbe est une règle CSS à part, facile à retirer.
+- Contrastes sur la teinte (calcul fait pour cette fiche) : #121212 sur #dfe5f9 : **14,91:1** ; sur #f1f4ff : 17,06:1 ; #2e2e31 sur #dfe5f9 : 10,77:1. Seuil RGAA 3.2 : 4,5:1 pour du texte normal : atteint partout.
+
+### 9.5 Espacements, alignement, petit écran, mode clair et mode sombre
+
+| Sujet | Règle | Source |
+| ----- | ----- | ------ |
+| Espace vertical autour (≥ 768 px) | haut et bas : `--ft-spacer-l4` (4rem) ; hauteur minimale de la zone : **30.9375rem**, valeur du gabarit | variable DS ; hauteur du gabarit |
+| Espace vertical (< 768 px) | haut et bas : `--ft-spacer-l1` (2rem) | variable DS |
+| Marges latérales | inchangées : 1.5rem, puis 1rem sous 600 px (`.home-main`) | style.css existant |
+| Alignement vertical | `align-items: center` sur la grille : le texte est centré face à la photo | existant |
+| Colonnes (≥ 768 px) | deux colonnes égales, écart `--ft-spacer-l1` (2rem), largeur max 80rem | existant |
+| Petit écran (< 768 px) | une colonne : titre, paragraphe, **puis** photo ; écart `--ft-spacer-l1` ; photo recadrée au centre en 16:9 (existant) | existant |
+| Taille du titre | change toute seule avec `display-3` (2rem, 1.75rem, 1.5rem) | feuille |
+| Disques décoratifs | gardés sur petit écran, mais plus petits ; coupés par `overflow: hidden` | à valider |
+
+- Pas de bouton, pas de lien : les utilisateurs passent par le menu du bandeau commun.
+- **Mode clair et mode sombre de Grist** : inchangé par rapport au §4. `body` pose son fond blanc **et** sa couleur de texte ; la teinte de l'option est translucide et posée sur ce blanc, elle rend donc la même chose dans les deux modes. Les disques utilisent des couleurs fixes (variables de la feuille, qui ne changent pas en mode sombre). **À valider** à l'écran dans Grist DEV, clair et sombre, bureau et mobile.
+- Contrastes RGAA 3.2 : texte #121212 sur blanc 18,73:1 (voir §4) ; sur la teinte, voir 9.4. Les disques ne portent aucun texte.
+- RGAA 9.1 : un seul `h1`, puis aucun autre titre : la hiérarchie reste simple. À valider avec l'audit.
+
+### 9.6 Ce qui change dans les tests
+
+Tests existants (test/page.test.js, test/styles.test.js) :
+
+| Test | Changement |
+| ---- | ---------- |
+| « la page a exactement un h1, de classe sr-only » | À **modifier** : exactement un `h1`, de classe `display-3`, **sans** `sr-only`, et dont le texte (balises retirées) est « Bienvenue sur Partenariat simplifié » |
+| « la phrase d'accueil est un paragraphe .t1 » | À **modifier** : paragraphe de classe `t2`, avec le texte « L'outil qui vous aidera à gérer et piloter les actions d'insertion par le sport. » (l'ancienne phrase « Bienvenue sur l'outil… » disparaît) |
+| « la photo a un alt vide… », « le fichier de la photo existe… », « la photo pese moins de 200 000 octets » | **Inchangés** (la balise `<img class="home-photo">` reste) |
+| « la page ne contient plus de carte… », « la balise du bandeau commun… », « script.js demande l'acces complet » | **Inchangés** |
+| « la feuille declare bien des classes en tete de selecteur » (styles.test.js) | À **compléter** : ajouter `home-hero`, `home-title`, `home-photo-frame` à la liste |
+| « aucune classe du widget ne reprend un nom du design system » | **Inchangé** : il contrôlera les nouvelles classes `home-` (elles ne sont pas dans l'inventaire) |
+| test de build (page-accueil.html à jour) | **Inchangé** : à relancer avec `npm run build` |
+
+Nouveaux tests à prévoir (au testeur de les confirmer) :
+
+1. index.html ne contient plus `sr-only` ni la phrase « Bienvenue sur l'outil ».
+2. Le `h1` contient un `<br role="none">`.
+3. Toute classe de index.html est soit dans test/design-system-classes.txt, soit préfixée `home-` (attrape une classe inventée : `strip`, `with-bg-blue`, `display-3`, `t2`, `font-weight-normal`, `font-weight-bold` sont dans l'inventaire ; `outil-agent` sur `body` est à vérifier).
+4. style.css n'écrit **aucune couleur en dur** (`#xxxxxx`, `rgb(`, `hsl(`) : toutes passent par `var(--ft-…)`. Aujourd'hui la feuille n'en contient aucune.
+5. index.html ne contient ni `<a ` ni `<button` : pas de lien ni de bouton dans la zone d'accueil.
+6. Les largeurs `@media` de style.css sont 600 et 768 px seulement (pas de nouvelle valeur inventée).
+7. Optionnel : les attributs `width` et `height` de la photo correspondent aux dimensions réelles du fichier (1200 × 800). Sans dépendance npm, cela demande de lire l'en-tête du JPEG : à confirmer avec le testeur avant de l'écrire.
+
+Les tests ne voient ni les arcs, ni la courbe, ni le rendu : le contrôle à l'écran (clair/sombre, bureau/mobile) reste indispensable.
+
+### 9.7 Fichiers touchés par dev-interface (rappel, hors périmètre de cette fiche)
+
+src/page-accueil/index.html (titre, paragraphe, cadre de la photo, classes `strip with-bg-blue` si l'option est acceptée) et style.css (`.home-hero`, `.home-title`, `.home-photo-frame` et ses deux disques, espacements). Puis `npm run build` et `npm test`. CLAUDE.md et README.md : la mention de `.t1` et du `h1` masqué est à mettre à jour (rôle du chef de projet et de la documentaliste).
+
 ## Règles pour dev-interface (résumé)
+
+**La section 9 remplace les règles 2 à 4 ci-dessous** (texte, grille, photo) : titre `h1.display-3` sur deux lignes, paragraphe `t2`, zone `home-hero`, photo dans `home-photo-frame` avec deux disques en couleurs du design system.
 
 1. Fond blanc : `body { background: var(--ft-color-background-neutral-light); color: var(--ft-color-text-content-default); }` (les deux ensemble).
 2. Texte d'accueil : `<p class="t1 home-intro">`, couleur `--ft-color-text-content-strong`, aligné à gauche, `margin: 0`. Aucune taille ni graisse écrite à la main.
@@ -357,6 +542,10 @@ Les tests ne vérifient ni le rendu ni les couleurs : un contrôle visuel (clair
 6. Droit à l'image : les personnes visibles sur la photo ont-elles donné leur accord pour une publication sur un dépôt et une page publics ?
 7. Rendu dans Grist DEV, modes clair et sombre, bureau et mobile : à regarder (aucun rendu vérifié par cette fiche).
 8. Le menu du bandeau commun contient-il bien la liste des actions et la page publique ?
+9. Zone d'accueil (§9) : écart accepté au gabarit « Landing Page Template » (on reprend ses classes de teinte et de titre, pas son bloc, qui cache la photo sous 768 px) ?
+10. Titre : `display-3` (2rem) suffit-il, ou faut-il `display-1` (2.625rem, comportement mobile non vérifié) ?
+11. Photo : angles arrondis (0.75rem) et deux disques de couleur derrière elle : formes absentes du design system, acceptées ?
+12. Option fond teinté (`strip with-bg-blue`) et bas en courbe (absent du design system) : à soumettre au chef de projet ; sinon page blanche.
 
 ## Origine de la photo
 
