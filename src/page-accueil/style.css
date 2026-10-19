@@ -2,10 +2,14 @@
    avant cette feuille, et reprendre un de ses noms (header, card, title...) nous
    ferait heriter de ses regles sans le voir. */
 
+/* Fond et couleur du texte vont ensemble : si seul le fond etait pose, un texte
+   clair herite d'un theme sombre de Grist deviendrait illisible sur le blanc.
+   Sous « outil-agent », --ft-color-background-layout-body est bleu pale : le
+   blanc vient de --ft-color-background-neutral-light. */
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--ft-color-background-layout-body);
+  background: var(--ft-color-background-neutral-light);
   color: var(--ft-color-text-content-default);
 }
 
@@ -13,80 +17,46 @@ body {
   padding: 2rem 1.5rem;
 }
 
-/* Police, taille et graisse viennent de .t2 : on ne regle que la largeur, calee
-   sur la grille des cartes, l'ecart avec elles et l'encre des autres titres. */
-.home-intro {
-  max-width: 80rem;
-  margin: 0 auto 2.5rem;
-  text-align: center;
-  color: var(--ft-color-text-content-strong);
-}
-
-/* Quatre vignettes par ligne, remplies depuis la gauche : les entrees a venir
-   prendront les places libres sans deplacer les premieres. Les vignettes sont le
-   composant Card link tel quel (illustration a gauche, titre a droite) : la
-   grille ne regle que leur nombre par ligne et la largeur totale. */
-.home-cards {
+/* Une colonne : le texte d'abord, la photo dessous (meme ordre que dans le HTML,
+   donc meme ordre de lecture au clavier et au lecteur d'ecran). */
+.home-content {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  gap: var(--ft-spacer-m2);
+  align-items: center;
   max-width: 80rem;
   margin: 0 auto;
 }
 
-/* Le composant ne laisse que .75rem entre sa decoration et son texte, ecart
-   prevu pour une petite icone : a cote d'une illustration de 64 px, le titre
-   paraissait colle. */
-.home-cards .ds-card-link-body {
-  padding-left: 1.25rem;
-}
-
-/* La ligne d'etat n'existe pas chez le design system. Elle herite de l'encre du
-   corps de carte, qu'il passe au gris quand la carte est desactivee. */
-.home-card-status {
-  margin-top: .5rem;
-  font-size: .875rem;
-}
-.home-card-status:empty { display: none; }
-
-/* Panneau de configuration : il remplace les cartes le temps du reglage, sur le
-   meme fond blanc qu'elles. */
-.home-config {
-  max-width: 64rem;
-  margin: 0 auto;
-  padding: 1.5rem;
-  background: var(--ft-color-background-neutral-light);
-  border: 1px solid var(--ft-color-border-neutral-default);
-  border-radius: .5rem;
-}
-
-.home-config-title {
+/* Police, taille et graisse viennent de .t1 : on ne regle que l'encre, l'alignement
+   et la marge basse que .t1 ajoute (l'ecart vient du gap de la grille). */
+.home-intro {
+  margin: 0;
+  text-align: left;
   color: var(--ft-color-text-content-strong);
 }
 
-.home-config-help {
-  color: var(--ft-color-text-content-weak);
+/* Petit ecran : hauteur limitee, photo recadree au centre. */
+.home-photo {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
-.home-config-field {
-  margin-bottom: 1rem;
-}
-
-.home-config-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .75rem;
-  margin-top: 1.5rem;
-}
-
-/* Sous cette largeur, quatre cartes en ligne n'auraient plus la place pour
-   leur titre a cote de l'illustration. */
-@media (max-width: 1000px) {
-  .home-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* 768 px est le point « md » du design system. Deux colonnes de meme largeur ;
+   la photo reprend son rapport d'origine, sans recadrage. */
+@media (min-width: 768px) {
+  .home-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ft-spacer-l1);
+  }
+  .home-photo { aspect-ratio: auto; }
 }
 
 @media (max-width: 600px) {
   .home-main { padding: 1.5rem 1rem; }
-  .home-cards { grid-template-columns: 1fr; gap: 1rem; }
-  .home-config { padding: 1rem; }
 }
